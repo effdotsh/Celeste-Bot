@@ -101,7 +101,7 @@ MonoBehaviour:
   minMutationChance: 0
   deletionCutoff: 0.25
   insertionCutoff: 0.5
-  populationSize: 500
+  populationSize: 200
   delayStart: 0
   player: {fileID: 1680434012694937352, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
   hideAgents: 0

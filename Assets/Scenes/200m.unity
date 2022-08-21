@@ -652,12 +652,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
-      propertyPath: hideAgents
+      propertyPath: c1.b
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
-      propertyPath: populationSize
-      value: 200
+      propertyPath: c1.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
+      propertyPath: c1.r
+      value: 0.18177521
+      objectReference: {fileID: 0}
+    - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
+      propertyPath: agentColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
+      propertyPath: agentColor.b
+      value: 0.6509434
+      objectReference: {fileID: 0}
+    - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
+      propertyPath: agentColor.g
+      value: 0.6509434
+      objectReference: {fileID: 0}
+    - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
+      propertyPath: agentColor.r
+      value: 0.6509434
       objectReference: {fileID: 0}
     - target: {fileID: 2300929569021049639, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
       propertyPath: m_Name

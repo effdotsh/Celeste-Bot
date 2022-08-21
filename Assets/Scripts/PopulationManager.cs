@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class PopulationManager : MonoBehaviour
 {
+    public Color agentColor;
     private const int NumChoices = 12;
     private const int MinActionTime = 5;
     private const int MaxActionTime = 25;
@@ -20,7 +21,7 @@ public class PopulationManager : MonoBehaviour
     public int delayStart;
     public GameObject player;
 
-    private float _bestFitness = -999999;
+    private float _bestFitness = 0;
     private List<int> _bestActions;
     private int _bestMutStartInd = 0;
     private int _bestRandStartInd = 0;
@@ -37,10 +38,11 @@ public class PopulationManager : MonoBehaviour
 
     private int _deadCounter = 0;
 
-    
+
     private bool _won = false;
-    
+
     private List<CharacterController> _agents = new List<CharacterController>();
+
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +57,15 @@ public class PopulationManager : MonoBehaviour
         _bestReplayer.humanPlayer = false;
         _bestReplayer.SetActions(Mutate(_bestReplayer.GetActions(), 0));
 
+        _bestReplayer.trailEnabled = true;
+        SpriteRenderer bs = best.GetComponent<SpriteRenderer>();
+        bs.sortingOrder = 4;
+        TrailRenderer[] trails = best.GetComponentsInChildren<TrailRenderer>();
+        foreach (var tr in trails)
+        {
+            tr.sortingOrder = 3;
+        }
+
         for (int i = 0; i < populationSize; i++)
         {
             GameObject p = Instantiate(player, t.position, t.rotation);
@@ -62,10 +73,13 @@ public class PopulationManager : MonoBehaviour
             _agents.Add(c);
             c.manager = this;
             c.humanPlayer = false;
-
+            c.trailEnabled = false;
+            c.dashTrail.enabled = false;
+            c.normalTrail.enabled = false;
+            SpriteRenderer s = p.GetComponent<SpriteRenderer>();
+            s.color = agentColor;
             if (hideAgents)
             {
-                SpriteRenderer s = p.GetComponent<SpriteRenderer>();
                 s.enabled = false;
             }
 
@@ -91,18 +105,21 @@ public class PopulationManager : MonoBehaviour
         var fitness = c.GetFitness();
         var actions = c.GetActions();
 
-        if (fitness >= _bestFitness)
+
+        if (fitness > _bestFitness)
         {
             _bestFitness = fitness;
             _bestActions = actions;
             _bestMutStartInd = c.GetActionMutationStart();
             _bestRandStartInd = c.GetCompleteRandStart();
             _won = c.won;
+            Debug.Log(_bestFitness);
             // print("-----");
-            print(_bestFitness);
             // print(_bestMutStartInd);
             // print(_bestRandStartInd);
         }
+        else if (Mathf.Abs(_bestFitness - 0) < 0.001) _bestActions = actions;
+
 
         if (Time.realtimeSinceStartup < delayStart)
         {
@@ -118,15 +135,32 @@ public class PopulationManager : MonoBehaviour
 
         if (_deadCounter >= populationSize)
         {
-            _deadCounter = 0;
-            foreach (var a in _agents)
-            {
-                a.Respawn();
-                if (_won) a.SetActions(_bestActions);
-            }
-            _bestReplayer.Respawn();
+            ResetGame();
         }
     }
+
+    private void ResetGame()
+    {
+        _deadCounter = 0;
+        foreach (var a in _agents)
+        {
+            a.Respawn();
+            if (_won) a.SetActions(_bestActions);
+        }
+        _bestReplayer.SetActions(_bestActions);
+        _bestReplayer.Respawn();
+
+        GameObject[] balloons = GameObject.FindGameObjectsWithTag("Balloon");
+        if (balloons != null)
+        {
+            foreach (GameObject bal in balloons)
+            {
+                Balloon b = bal.GetComponent<Balloon>();
+                b.TriggerReset();
+            }
+        }
+    }
+
 
     public int[] GenerateActionPair()
     {

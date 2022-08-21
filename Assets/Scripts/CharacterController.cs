@@ -11,6 +11,14 @@ using Random = UnityEngine.Random;
 
 public class CharacterController : MonoBehaviour
 {
+    public bool trailEnabled;
+    public TrailRenderer normalTrail;
+    public TrailRenderer dashTrail;
+
+    public Sprite normalSprite;
+    public Sprite dashSprite;
+
+
     public float standDist = 0.54f;
 
     public Rigidbody2D rb;
@@ -26,7 +34,7 @@ public class CharacterController : MonoBehaviour
     private float _targetVelY = 0f;
     private float _targetVelXChoice = 0f;
     private float _targetVelYChoice = 0f;
-    
+
     private float _velX = 0;
 
     public float accelerationX;
@@ -47,8 +55,6 @@ public class CharacterController : MonoBehaviour
     private float _dashSpeedY = 0;
 
     public SpriteRenderer sprite;
-    public Color defaultColor;
-    public Color dashColor;
 
 
     private float _spawnX;
@@ -68,7 +74,7 @@ public class CharacterController : MonoBehaviour
 
     private float lastSpring = -999;
     public float springStun;
-    
+
     private int _actionCounter = 0;
     private int _frameCounter = 0;
     public bool humanPlayer = true;
@@ -76,7 +82,6 @@ public class CharacterController : MonoBehaviour
 
     private int prevCheckpointActionNumber = 0;
     private int curCheckpointActionNumber = 0;
-    
 
 
     private List<float> _breakBlockStartTimes = new List<float>();
@@ -86,18 +91,16 @@ public class CharacterController : MonoBehaviour
     public bool dead = false;
 
     public bool won = false;
-    
+
     void Awake()
     {
-        sprite.color = defaultColor;
-
+        GiveDash();
         Vector3 t = transform.position;
         _spawnX = t.x;
         _spawnY = t.y;
 
 
         IgnoreOthers("Player");
-        
     }
 
     private void IgnoreOthers(String t)
@@ -121,7 +124,7 @@ public class CharacterController : MonoBehaviour
         {
             _moveDisableTimer = -1;
         }
-        
+
         if (_dashCounter > 0)
         {
             rb.velocity = new Vector2(_dashSpeedX, _dashSpeedY);
@@ -129,7 +132,6 @@ public class CharacterController : MonoBehaviour
 
             if (_dashCounter <= 0)
             {
-                _hasDash = false;
                 Vector2 cur = rb.velocity;
                 rb.velocity = new Vector2(cur.x, cur.y / 3);
             }
@@ -147,7 +149,13 @@ public class CharacterController : MonoBehaviour
 
             if (Standing())
             {
-                sprite.color = defaultColor;
+                sprite.sprite = normalSprite;
+                if (trailEnabled)
+                {
+                    dashTrail.enabled = false;
+                    normalTrail.enabled = true;
+                }
+
                 _hasDash = true;
             }
 
@@ -255,13 +263,17 @@ public class CharacterController : MonoBehaviour
             }
         }
     }
+
     void FixedUpdate()
     {
+        SpriteRenderer s = GetComponent<SpriteRenderer>();
+        s.flipX = _targetVelX < 0;
         if (dead)
         {
             rb.velocity = new Vector2(0, 0);
             return;
         }
+
         CheckBreakableBlocks();
         AIControl();
         UpdatePhysics();
@@ -276,11 +288,21 @@ public class CharacterController : MonoBehaviour
 
             _targetVelY = y;
             _targetVelYChoice = y;
-            
+
             _facing = Mathf.Sign(_targetVelX);
         }
     }
 
+    public void GiveDash()
+    {
+        _hasDash = true;
+        sprite.sprite = normalSprite;
+        if (trailEnabled)
+        {
+            dashTrail.enabled = false;
+            normalTrail.enabled = true;
+        }
+    }
 
     private bool Standing()
     {
@@ -307,11 +329,12 @@ public class CharacterController : MonoBehaviour
         _breakBlockStartTimes.Add(Time.realtimeSinceStartup);
         _breakBlockColliders.Add(col);
     }
+
     private bool WallSliding()
     {
         if (Time.realtimeSinceStartup - lastSpring < springStun) return false;
         if (_targetVelX == 0) return false;
-        
+
         Transform t = transform;
         RaycastHit2D hit;
         hit = Physics2D.Raycast(t.position, Vector2.left, standDist);
@@ -347,8 +370,7 @@ public class CharacterController : MonoBehaviour
         Vector2 curVel = rb.velocity;
         rb.velocity = new Vector2(curVel.x, 0);
         rb.AddForce(Vector2.up * springForce, ForceMode2D.Impulse);
-        _hasDash = true;
-        sprite.color = defaultColor;
+        GiveDash();
         _dashCounter = 0;
         lastSpring = Time.realtimeSinceStartup;
     }
@@ -359,10 +381,15 @@ public class CharacterController : MonoBehaviour
 
         _targetVelX = _targetVelXChoice;
         _targetVelY = _targetVelYChoice;
-        
+
         _moveDisableTimer = -1;
 
-        sprite.color = dashColor;
+        sprite.sprite = dashSprite;
+        if (trailEnabled)
+        {
+            dashTrail.enabled = true;
+            normalTrail.enabled = false;
+        }
 
         _hasDash = false;
         _dashCounter = dashLength;
@@ -391,8 +418,8 @@ public class CharacterController : MonoBehaviour
 
         _actionCounter = 0;
         _frameCounter = 0;
-        
-        
+
+
         foreach (Collider2D col in _breakBlockColliders)
         {
             Physics2D.IgnoreCollision(col, collider, false);
@@ -400,8 +427,10 @@ public class CharacterController : MonoBehaviour
 
         _breakBlockColliders = new List<Collider2D>();
         _breakBlockStartTimes = new List<float>();
+
+        if (trailEnabled) normalTrail.enabled = true;
     }
-    
+
     public void Kill()
     {
         dead = true;
@@ -409,6 +438,9 @@ public class CharacterController : MonoBehaviour
         rb.simulated = false;
         if (!humanPlayer) manager.Report(this);
         else Respawn();
+
+        dashTrail.enabled = false;
+        normalTrail.enabled = false;
     }
 
     public int GetActionMutationStart()
@@ -431,11 +463,9 @@ public class CharacterController : MonoBehaviour
             _fitness = t.value;
             if (_hasDash) _fitness += 0.1f;
             _fitness -= 0.000001f * _actionCounter;
-            
+
             prevCheckpointActionNumber = curCheckpointActionNumber;
             curCheckpointActionNumber = _actionCounter;
-            
-
         }
 
         if (t.isWin) won = true;

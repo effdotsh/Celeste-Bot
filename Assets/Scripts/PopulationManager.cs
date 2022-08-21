@@ -37,6 +37,9 @@ public class PopulationManager : MonoBehaviour
 
     private int _deadCounter = 0;
 
+    
+    private bool _won = false;
+    
     private List<CharacterController> _agents = new List<CharacterController>();
 
     // Start is called before the first frame update
@@ -88,12 +91,13 @@ public class PopulationManager : MonoBehaviour
         var fitness = c.GetFitness();
         var actions = c.GetActions();
 
-        if (fitness > _bestFitness)
+        if (fitness >= _bestFitness)
         {
             _bestFitness = fitness;
             _bestActions = actions;
             _bestMutStartInd = c.GetActionMutationStart();
             _bestRandStartInd = c.GetCompleteRandStart();
+            _won = c.won;
             // print("-----");
             print(_bestFitness);
             // print(_bestMutStartInd);
@@ -107,24 +111,20 @@ public class PopulationManager : MonoBehaviour
             return;
         }
 
-        if (!_bestReplayer.won)
-        {
-            List<int> mutActions = Mutate(_bestActions, _bestMutStartInd);
-            c.SetActions(mutActions);
-        }
-        else
-        {
-            c.SetActions(_bestActions);
-        }
+
+        List<int> mutActions = Mutate(_bestActions, _bestMutStartInd);
+        c.SetActions(mutActions);
 
 
-        if (_deadCounter >= populationSize - 1)
+        if (_deadCounter >= populationSize)
         {
             _deadCounter = 0;
             foreach (var a in _agents)
             {
                 a.Respawn();
+                if (_won) a.SetActions(_bestActions);
             }
+            _bestReplayer.Respawn();
         }
     }
 

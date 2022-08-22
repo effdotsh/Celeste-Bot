@@ -150,33 +150,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937353, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937353, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937353, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937353, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1680434012694937354, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1680434012694937354, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.7657905
+      value: 0.22
       objectReference: {fileID: 0}
     - target: {fileID: 1680434012694937354, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.58064
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1680434012694937354, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
       propertyPath: m_LocalPosition.z
@@ -208,30 +192,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1680434012694937354, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937357, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: dashColor.b
-      value: 0.18039213
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937357, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: dashColor.g
-      value: 0.54501337
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937357, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: dashColor.r
-      value: 0.8392157
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937357, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: defaultColor.b
-      value: 0.14966941
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937357, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: defaultColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1680434012694937357, guid: 840ff7052697c62409ba6bd4896d2908, type: 3}
-      propertyPath: defaultColor.r
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

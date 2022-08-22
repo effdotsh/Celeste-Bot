@@ -7,6 +7,9 @@ TagManager:
   - floor
   - target
   - Balloon
+  - Border
+  - Cloud Spawner
+  - Cloud
   layers:
   - Default
   - TransparentFX

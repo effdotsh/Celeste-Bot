@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEditor.Timeline;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -59,12 +60,9 @@ public class PopulationManager : MonoBehaviour
 
         _bestReplayer.trailEnabled = true;
         SpriteRenderer bs = best.GetComponent<SpriteRenderer>();
-        bs.sortingOrder = 4;
-        TrailRenderer[] trails = best.GetComponentsInChildren<TrailRenderer>();
-        foreach (var tr in trails)
-        {
-            tr.sortingOrder = 3;
-        }
+        bs.sortingOrder = 5;
+        _bestReplayer.normalTrail.sortingOrder = 4;
+        _bestReplayer.dashTrail.sortingOrder = 3;
 
         for (int i = 0; i < populationSize; i++)
         {
@@ -77,6 +75,7 @@ public class PopulationManager : MonoBehaviour
             c.dashTrail.enabled = false;
             c.normalTrail.enabled = false;
             SpriteRenderer s = p.GetComponent<SpriteRenderer>();
+            s.sortingOrder = 1;
             s.color = agentColor;
             if (hideAgents)
             {
@@ -157,6 +156,26 @@ public class PopulationManager : MonoBehaviour
             {
                 Balloon b = bal.GetComponent<Balloon>();
                 b.TriggerReset();
+            }
+        }
+        
+        
+        GameObject[] clouds = GameObject.FindGameObjectsWithTag("Cloud");
+        if (clouds != null)
+        {
+            foreach (GameObject cl in clouds)
+            {
+                Destroy(cl);
+            }
+        }
+        
+        GameObject[] cspawner = GameObject.FindGameObjectsWithTag("Cloud Spawner");
+        if (cspawner != null)
+        {
+            foreach (GameObject cs in cspawner)
+            {
+                CloudSpawner spawner = cs.GetComponent<CloudSpawner>();
+                spawner.Spawn();
             }
         }
     }

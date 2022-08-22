@@ -152,8 +152,8 @@ public class CharacterController : MonoBehaviour
                 sprite.sprite = normalSprite;
                 if (trailEnabled)
                 {
-                    dashTrail.enabled = false;
-                    normalTrail.enabled = true;
+                    normalTrail.sortingOrder = 4;
+                    dashTrail.sortingOrder = 3;
                 }
 
                 _hasDash = true;
@@ -299,8 +299,8 @@ public class CharacterController : MonoBehaviour
         sprite.sprite = normalSprite;
         if (trailEnabled)
         {
-            dashTrail.enabled = false;
-            normalTrail.enabled = true;
+            normalTrail.sortingOrder = 4;
+            dashTrail.sortingOrder = 3;
         }
     }
 
@@ -311,15 +311,15 @@ public class CharacterController : MonoBehaviour
 
 
         hit = Physics2D.Raycast(t.position - new Vector3(t.localScale.x / 2, 0, 0), -Vector2.up, standDist);
-        if (hit.collider != null && hit.collider.tag.Equals("floor")) return true;
+        if (hit.collider != null && (hit.collider.tag.Equals("floor") || hit.collider.tag.Equals("Cloud"))) return true;
 
         // Debug.DrawLine(t.position, t.position - Vector3.up * standDist, Color.red);
 
         hit = Physics2D.Raycast(t.position, -Vector2.up, standDist);
-        if (hit.collider != null && hit.collider.tag.Equals("floor")) return true;
+        if (hit.collider != null && (hit.collider.tag.Equals("floor") || hit.collider.tag.Equals("Cloud"))) return true;
 
         hit = Physics2D.Raycast(t.position + new Vector3(t.localScale.x / 2, 0, 0), -Vector2.up, standDist);
-        if (hit.collider != null && hit.collider.tag.Equals("floor")) return true;
+        if (hit.collider != null && (hit.collider.tag.Equals("floor") || hit.collider.tag.Equals("Cloud"))) return true;
 
         return false;
     }
@@ -387,8 +387,8 @@ public class CharacterController : MonoBehaviour
         sprite.sprite = dashSprite;
         if (trailEnabled)
         {
-            dashTrail.enabled = true;
-            normalTrail.enabled = false;
+            normalTrail.sortingOrder = 3;
+            dashTrail.sortingOrder = 4;
         }
 
         _hasDash = false;
@@ -428,7 +428,14 @@ public class CharacterController : MonoBehaviour
         _breakBlockColliders = new List<Collider2D>();
         _breakBlockStartTimes = new List<float>();
 
-        if (trailEnabled) normalTrail.enabled = true;
+        if (trailEnabled)
+        {
+            normalTrail.enabled = true;
+            dashTrail.enabled = true;
+
+            normalTrail.sortingOrder = 4;
+            dashTrail.sortingOrder = 3;
+        }
     }
 
     public void Kill()

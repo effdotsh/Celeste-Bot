@@ -141,11 +141,24 @@ public class PopulationManager : MonoBehaviour
     private void ResetGame()
     {
         _deadCounter = 0;
-        foreach (var a in _agents)
+        if (!_won)
         {
-            a.Respawn();
-            if (_won) a.SetActions(_bestActions);
+            foreach (var a in _agents)
+            {
+                a.Respawn();
+            }
         }
+        else
+        {
+            populationSize = 1;
+            foreach (var a in _agents)
+            {
+                a.sprite.enabled = false;
+                a.Respawn();
+            }
+        }
+        
+
         _bestReplayer.SetActions(_bestActions);
         _bestReplayer.Respawn();
 

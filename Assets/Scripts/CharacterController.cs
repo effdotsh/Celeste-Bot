@@ -264,6 +264,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    
     void FixedUpdate()
     {
         SpriteRenderer s = GetComponent<SpriteRenderer>();
@@ -475,7 +476,11 @@ public class CharacterController : MonoBehaviour
             curCheckpointActionNumber = _actionCounter;
         }
 
-        if (t.isWin) won = true;
+        if (t.isWin)
+        {
+            won = true;
+            Kill();
+        }
     }
 
     public float GetFitness()

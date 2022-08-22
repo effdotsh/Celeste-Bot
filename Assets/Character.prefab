@@ -169,7 +169,7 @@ MonoBehaviour:
   wallJumpTime: 17
   springForce: 10
   manager: {fileID: 0}
-  springStun: 1
+  springStun: 0
   humanPlayer: 1
   _breakBlockLag: 1
   dead: 0

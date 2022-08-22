@@ -9,6 +9,10 @@ public class Target : MonoBehaviour
     private float _id;
 
     public bool isWin;
+
+    public bool withDashOnly;
+
+    public bool acceptAny;
     void Start()
     {
         _id = Random.value;
@@ -17,10 +21,9 @@ public class Target : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
-    public float getID()
+    public float GetID()
     {
         return _id;
     }
@@ -30,12 +33,10 @@ public class Target : MonoBehaviour
         if (col.tag.Equals("Player"))
         {
             CharacterController c = col.gameObject.GetComponent<CharacterController>();
-            c.TargetReached(this);
 
-            if (isWin)
+            if (!withDashOnly || c.HasDash())
             {
-                print("win");
-                c.Kill();
+                c.TargetReached(this);
             }
         }
     }

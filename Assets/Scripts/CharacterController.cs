@@ -186,7 +186,9 @@ public class CharacterController : MonoBehaviour
         if (humanPlayer) return;
         if (_actionCounter + 1 >= _actions.Count)
         {
+            Debug.Log("ur mom");
             Kill();
+
             return;
         }
 
@@ -264,7 +266,11 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    
+    public void NewStart()
+    {
+        prevCheckpointActionNumber = _actionCounter;
+        curCheckpointActionNumber = _actionCounter;
+    }
     void FixedUpdate()
     {
         SpriteRenderer s = GetComponent<SpriteRenderer>();
@@ -401,8 +407,15 @@ public class CharacterController : MonoBehaviour
         _dashSpeedY = Mathf.Sin(angle) * dashSpeed;
     }
 
+    public bool HasDash()
+    {
+        return _hasDash;
+    }
+
     public void Respawn()
     {
+        sprite.sprite = normalSprite;
+
         dead = false;
         rb.simulated = true;
         transform.position = new Vector3(_spawnX, _spawnY, 0);
@@ -431,8 +444,8 @@ public class CharacterController : MonoBehaviour
 
         if (trailEnabled)
         {
-            normalTrail.enabled = true;
-            dashTrail.enabled = true;
+            // normalTrail.enabled = true;
+            // dashTrail.enabled = true;
 
             normalTrail.sortingOrder = 4;
             dashTrail.sortingOrder = 3;
@@ -441,14 +454,24 @@ public class CharacterController : MonoBehaviour
 
     public void Kill()
     {
+        if (trailEnabled)
+        {
+            // Debug.Log("-----");
+            // Debug.Log(_actions.Count);
+            // Debug.Log(_actionCounter);
+            // Debug.Log(prevCheckpointActionNumber);
+            // Debug.Log("------");
+
+        }
+        
         dead = true;
         rb.gravityScale = 0;
         rb.simulated = false;
         if (!humanPlayer) manager.Report(this);
         else Respawn();
 
-        dashTrail.enabled = false;
-        normalTrail.enabled = false;
+        // dashTrail.enabled = false;
+        // normalTrail.enabled = false;
     }
 
     public int GetActionMutationStart()
@@ -463,8 +486,9 @@ public class CharacterController : MonoBehaviour
 
     public void TargetReached(Target t)
     {
-        if (_scored.Contains(t.getID())) return;
-        _scored.Add(t.getID());
+
+        if (_scored.Contains(t.GetID())) return;
+        _scored.Add(t.GetID());
 
         if (t.value > _fitness)
         {
@@ -474,13 +498,18 @@ public class CharacterController : MonoBehaviour
 
             prevCheckpointActionNumber = curCheckpointActionNumber;
             curCheckpointActionNumber = _actionCounter;
+            
+            
+            
+            if (t.acceptAny || (t.withDashOnly && HasDash())) NewStart();
+            if (t.isWin)
+            {
+                print("win");
+                won = true;
+                Kill();
+            }
         }
 
-        if (t.isWin)
-        {
-            won = true;
-            Kill();
-        }
     }
 
     public float GetFitness()

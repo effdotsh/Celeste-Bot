@@ -10,19 +10,17 @@ public class PopulationManager : MonoBehaviour
 {
     public Color agentColor;
     private const int NumChoices = 12;
-    private const int MinActionTime = 5;
-    private const int MaxActionTime = 25;
+    public int MinActionTime;
+    public int MaxActionTime;
 
     public float maxMutationChance;
     public float minMutationChance;
-    public float deletionCutoff;
-    public float insertionCutoff;
 
     public int populationSize;
     public int delayStart;
     public GameObject player;
 
-    private float _bestFitness = 0;
+    private float _bestFitness = -999;
     private List<int> _bestActions;
     private int _bestMutStartInd = 0;
     private int _bestRandStartInd = 0;
@@ -45,6 +43,8 @@ public class PopulationManager : MonoBehaviour
     private List<CharacterController> _agents = new List<CharacterController>();
 
 
+    private bool _resetLock = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +56,7 @@ public class PopulationManager : MonoBehaviour
         _bestReplayer = best.GetComponent<CharacterController>();
         _bestReplayer.manager = this;
         _bestReplayer.humanPlayer = false;
-        _bestReplayer.SetActions(Mutate(_bestReplayer.GetActions(), 0));
+        _bestReplayer.SetActions(Mutate(_bestReplayer.GetActions(), 0, 0));
 
         _bestReplayer.trailEnabled = true;
         SpriteRenderer bs = best.GetComponent<SpriteRenderer>();
@@ -92,13 +92,20 @@ public class PopulationManager : MonoBehaviour
     }
 
     public void Report(CharacterController c)
-    {
+    { 
+        if (_won && c != _bestReplayer) return; // stupid patch for reset bug that I can't figure out the cause of
+        // else if (_won && c == _bestReplayer)
+        // {
+        //     // Debug.Log("Triggering win reset");
+        //     ResetGame();
+        // }
+        
         _deadCounter++;
         if (c == _bestReplayer)
         {
-            c.SetActions(_bestActions);
             return;
         }
+
 
 
         var fitness = c.GetFitness();
@@ -117,7 +124,6 @@ public class PopulationManager : MonoBehaviour
             // print(_bestMutStartInd);
             // print(_bestRandStartInd);
         }
-        else if (Mathf.Abs(_bestFitness - 0) < 0.001) _bestActions = actions;
 
 
         if (Time.realtimeSinceStartup < delayStart)
@@ -127,40 +133,54 @@ public class PopulationManager : MonoBehaviour
             return;
         }
 
+        // if (_won || _deadCounter >= populationSize)
 
-        List<int> mutActions = Mutate(_bestActions, _bestMutStartInd);
-        c.SetActions(mutActions);
-
-
-        if (_deadCounter >= populationSize)
+        if (_deadCounter == populationSize)
         {
+            if(!_resetLock) Debug.Log("hevy iz ded");
+            
             ResetGame();
         }
     }
 
     private void ResetGame()
     {
+        if (_resetLock) return;
+        
+
+        _resetLock = true;
         _deadCounter = 0;
+
+        
+        List<int> ba = Mutate(_bestActions, _bestMutStartInd, _bestRandStartInd);
+        _bestReplayer.SetActions(ba);
+        _bestReplayer.Respawn();
+
+
         if (!_won)
         {
             foreach (var a in _agents)
             {
+                if (!a.dead) a.Kill();
+            }
+
+            foreach (var a in _agents)
+            {
+                List<int> mutActions = Mutate(_bestActions, _bestRandStartInd, _bestRandStartInd);
+                a.SetActions(mutActions);
                 a.Respawn();
             }
         }
         else
         {
-            populationSize = 1;
             foreach (var a in _agents)
             {
                 a.sprite.enabled = false;
-                a.Respawn();
+                // a.Respawn();
+                a.dead = true;
             }
         }
-        
 
-        _bestReplayer.SetActions(_bestActions);
-        _bestReplayer.Respawn();
 
         GameObject[] balloons = GameObject.FindGameObjectsWithTag("Balloon");
         if (balloons != null)
@@ -171,8 +191,8 @@ public class PopulationManager : MonoBehaviour
                 b.TriggerReset();
             }
         }
-        
-        
+
+
         GameObject[] clouds = GameObject.FindGameObjectsWithTag("Cloud");
         if (clouds != null)
         {
@@ -181,7 +201,7 @@ public class PopulationManager : MonoBehaviour
                 Destroy(cl);
             }
         }
-        
+
         GameObject[] cspawner = GameObject.FindGameObjectsWithTag("Cloud Spawner");
         if (cspawner != null)
         {
@@ -191,6 +211,8 @@ public class PopulationManager : MonoBehaviour
                 spawner.Spawn();
             }
         }
+
+        _resetLock = false;
     }
 
 
@@ -201,20 +223,20 @@ public class PopulationManager : MonoBehaviour
         return new int[] { time, action };
     }
 
-    private List<int> Mutate(List<int> actions, int startInd)
+    private List<int> Mutate(List<int> actions, int semiRandomStart, int completeRandomStart)
     {
         var mutChance = (maxMutationChance - minMutationChance) * Random.value + minMutationChance;
         var mutActions = new List<int>();
 
-        int targetLen = (int)(Time.realtimeSinceStartup / increaseEvery + 1) * increaseBy * 2;
+        int targetLen = (int)(Time.realtimeSinceStartup / increaseEvery + 3.5) * increaseBy * 2;
 
 
         for (int i = 0; i < actions.Count; i += 2)
         {
             var roll = Random.value;
-            if (i > _bestRandStartInd + 2) roll = 0;
+            if (i > completeRandomStart) roll = 0;
 
-            if (i <= startInd + 2 || roll > mutChance)
+            if (i < semiRandomStart || roll > mutChance)
             {
                 mutActions.Add(actions[i]);
                 mutActions.Add(actions[i + 1]);

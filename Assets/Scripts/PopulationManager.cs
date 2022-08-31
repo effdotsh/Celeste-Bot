@@ -94,11 +94,13 @@ public class PopulationManager : MonoBehaviour
     public void Report(CharacterController c)
     { 
         if (_won && c != _bestReplayer) return; // stupid patch for reset bug that I can't figure out the cause of
-        // else if (_won && c == _bestReplayer)
-        // {
-        //     // Debug.Log("Triggering win reset");
-        //     ResetGame();
-        // }
+        else if (_won)
+        {        
+            _deadCounter++;
+
+            // Debug.Log("Triggering win reset");
+            ResetGame();
+        }
         
         _deadCounter++;
         if (c == _bestReplayer)
@@ -120,6 +122,12 @@ public class PopulationManager : MonoBehaviour
             _bestRandStartInd = c.GetCompleteRandStart();
             _won = c.won;
             Debug.Log(_bestFitness);
+            if (_won)
+            {
+                Debug.Log("OUI OUI");
+                ResetGame();
+                return;
+            }
             // print("-----");
             // print(_bestMutStartInd);
             // print(_bestRandStartInd);
@@ -152,13 +160,15 @@ public class PopulationManager : MonoBehaviour
         _deadCounter = 0;
 
         
-        List<int> ba = Mutate(_bestActions, _bestMutStartInd, _bestRandStartInd);
-        _bestReplayer.SetActions(ba);
-        _bestReplayer.Respawn();
+        
+
 
 
         if (!_won)
         {
+            List<int> ba = Mutate(_bestActions, _bestMutStartInd, _bestRandStartInd);
+            _bestReplayer.SetActions(ba);
+            _bestReplayer.Respawn();
             foreach (var a in _agents)
             {
                 if (!a.dead) a.Kill();
@@ -179,6 +189,8 @@ public class PopulationManager : MonoBehaviour
                 // a.Respawn();
                 a.dead = true;
             }
+            _bestReplayer.SetActions(_bestActions);
+            _bestReplayer.Respawn();
         }
 
 

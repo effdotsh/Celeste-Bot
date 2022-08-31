@@ -44,12 +44,13 @@ public class CharacterController : MonoBehaviour
     public float gravityScale = 10;
     public float fallingGravityScale = 40;
 
+    public int dashLength;
+    public float dashSpeed;
 
     private float _facing = 1;
 
     private bool _hasDash = false;
-    public int dashLength;
-    public float dashSpeed;
+
     private int _dashCounter = 0;
     private float _dashSpeedX = 0;
     private float _dashSpeedY = 0;
@@ -186,7 +187,6 @@ public class CharacterController : MonoBehaviour
         if (humanPlayer) return;
         if (_actionCounter + 1 >= _actions.Count)
         {
-            Debug.Log("ur mom");
             Kill();
 
             return;
@@ -450,6 +450,9 @@ public class CharacterController : MonoBehaviour
             normalTrail.sortingOrder = 4;
             dashTrail.sortingOrder = 3;
         }
+
+        prevCheckpointActionNumber = 0;
+        curCheckpointActionNumber = 0;
     }
 
     public void Kill()

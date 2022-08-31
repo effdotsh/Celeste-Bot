@@ -288,13 +288,14 @@ public class CharacterController : MonoBehaviour
 
     public void SetDirection(float x, float y)
     {
+        _targetVelXChoice = x;
+        _targetVelYChoice = y;
+
         if (_moveDisableTimer <= 0)
         {
             _targetVelX = x;
-            _targetVelXChoice = x;
 
             _targetVelY = y;
-            _targetVelYChoice = y;
 
             _facing = Mathf.Sign(_targetVelX);
         }

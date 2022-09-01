@@ -2183,6 +2183,10 @@ PrefabInstance:
       propertyPath: value
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7318803960955880544, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
+      propertyPath: acceptAny
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7318803960955880546, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: m_Name
       value: Target (1)
@@ -2560,6 +2564,10 @@ PrefabInstance:
       propertyPath: value
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7318803960955880544, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
+      propertyPath: acceptAny
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7318803960955880546, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: m_Name
       value: Target (2)
@@ -2822,6 +2830,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7318803960955880544, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318803960955880544, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
+      propertyPath: acceptAny
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7318803960955880546, guid: 150382647bb5da94dba28afa0cca29df, type: 3}

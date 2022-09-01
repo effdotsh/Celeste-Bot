@@ -30,10 +30,10 @@ public class PopulationManager : MonoBehaviour
     public bool hideAgents;
 
 
-    public int increaseBy;
-
-    public int increaseEvery;
-
+    public float startMaxTime;
+    public float increaseMaxTimeBy;
+    private float _maxTime;
+    private float _roundStart;
 
     private int _deadCounter = 0;
 
@@ -89,6 +89,14 @@ public class PopulationManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _maxTime = startMaxTime + increaseMaxTimeBy * _bestFitness;
+        if (Time.realtimeSinceStartup - _roundStart > _maxTime)
+        {
+            foreach (var a in _agents)
+            {
+                if (!a.dead) a.Kill();
+            }
+        }
     }
 
     public void Report(CharacterController c)
@@ -224,6 +232,8 @@ public class PopulationManager : MonoBehaviour
             }
         }
 
+
+        _roundStart = Time.realtimeSinceStartup;
         _resetLock = false;
     }
 
@@ -239,9 +249,6 @@ public class PopulationManager : MonoBehaviour
     {
         var mutChance = (maxMutationChance - minMutationChance) * Random.value + minMutationChance;
         var mutActions = new List<int>();
-
-        int targetLen = (int)(Time.realtimeSinceStartup / increaseEvery + 3.5) * increaseBy * 2;
-
 
         for (int i = 0; i < actions.Count; i += 2)
         {
@@ -262,7 +269,7 @@ public class PopulationManager : MonoBehaviour
         }
 
 
-        while (mutActions.Count < targetLen)
+        while (mutActions.Count < 999)
         {
             int[] n = GenerateActionPair();
             mutActions.Add(n[0]);

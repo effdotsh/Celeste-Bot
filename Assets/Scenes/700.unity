@@ -604,6 +604,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
+      propertyPath: startMaxTime
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2300929569021049639, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
       propertyPath: m_Name
       value: PopulationManager

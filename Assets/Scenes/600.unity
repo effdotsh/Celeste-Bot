@@ -830,6 +830,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
+      propertyPath: startMaxTime
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2300929569021049639, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
       propertyPath: m_Name
       value: PopulationManager
@@ -890,6 +894,10 @@ PrefabInstance:
     - target: {fileID: 7318803960955880544, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: value
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318803960955880544, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
+      propertyPath: acceptAny
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7318803960955880546, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: m_Name

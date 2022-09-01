@@ -174,9 +174,6 @@ public class PopulationManager : MonoBehaviour
 
         if (!_won)
         {
-            List<int> ba = Mutate(_bestActions, _bestMutStartInd, _bestRandStartInd);
-            _bestReplayer.SetActions(ba);
-            _bestReplayer.Respawn();
             foreach (var a in _agents)
             {
                 if (!a.dead) a.Kill();
@@ -197,8 +194,6 @@ public class PopulationManager : MonoBehaviour
                 // a.Respawn();
                 a.dead = true;
             }
-            _bestReplayer.SetActions(_bestActions);
-            _bestReplayer.Respawn();
         }
 
 
@@ -234,6 +229,8 @@ public class PopulationManager : MonoBehaviour
 
 
         _roundStart = Time.realtimeSinceStartup;
+        _bestReplayer.SetActions(_bestActions);
+        _bestReplayer.Respawn();
         _resetLock = false;
     }
 

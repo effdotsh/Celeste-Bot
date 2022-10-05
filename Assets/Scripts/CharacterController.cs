@@ -273,6 +273,7 @@ public class CharacterController : MonoBehaviour
         prevCheckpointActionNumber = _actionCounter;
         curCheckpointActionNumber = _actionCounter;
     }
+
     void FixedUpdate()
     {
         SpriteRenderer s = GetComponent<SpriteRenderer>();
@@ -467,14 +468,25 @@ public class CharacterController : MonoBehaviour
             // Debug.Log(_actionCounter);
             // Debug.Log(prevCheckpointActionNumber);
             // Debug.Log("------");
-
         }
-        
+
         dead = true;
         rb.gravityScale = 0;
         rb.simulated = false;
         if (!humanPlayer) manager.Report(this);
-        else Respawn();
+        else
+        {
+            Respawn();
+            GameObject[] balloons = GameObject.FindGameObjectsWithTag("Balloon");
+            if (balloons != null)
+            {
+                foreach (GameObject bal in balloons)
+                {
+                    Balloon b = bal.GetComponent<Balloon>();
+                    b.TriggerReset();
+                }
+            }
+        }
 
         // dashTrail.enabled = false;
         // normalTrail.enabled = false;
@@ -490,11 +502,10 @@ public class CharacterController : MonoBehaviour
         return curCheckpointActionNumber;
     }
 
-    public void TargetReached(Target t)
+    public void TargetReached(Target t, int retrograde)
     {
-
-        if (_scored.Contains(t.GetID())) return;
-        _scored.Add(t.GetID());
+        // if (_scored.Contains(t.GetID())) return;
+        // _scored.Add(t.GetID());
 
         if (t.value > _fitness)
         {
@@ -502,11 +513,10 @@ public class CharacterController : MonoBehaviour
             if (_hasDash) _fitness += 0.1f;
             _fitness -= 0.000001f * _actionCounter;
 
-            prevCheckpointActionNumber = curCheckpointActionNumber;
-            curCheckpointActionNumber = _actionCounter;
-            
-            
-            
+            prevCheckpointActionNumber = curCheckpointActionNumber - retrograde;
+            curCheckpointActionNumber = _actionCounter - retrograde;
+
+
             if (t.acceptAny || (t.withDashOnly && HasDash())) NewStart();
             if (t.isWin)
             {
@@ -515,7 +525,11 @@ public class CharacterController : MonoBehaviour
                 Kill();
             }
         }
+    }
 
+    public void TargetReached(Target t)
+    {
+        TargetReached(t, 0);
     }
 
     public float GetFitness()

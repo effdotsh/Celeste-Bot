@@ -39,5 +39,8 @@ public class Target : MonoBehaviour
                 c.TargetReached(this);
             }
         }
+        
     }
+
+
 }

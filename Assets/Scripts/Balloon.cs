@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class Balloon : MonoBehaviour
-{
-    private List<Collider2D> _ignoreList = new List<Collider2D>();
+public class Balloon : Target {
+    private List<float> _ignoreList = new List<float>();
     public Collider2D collider;
 
     // Start is called before the first frame update
@@ -23,21 +23,21 @@ public class Balloon : MonoBehaviour
     {
         if (col.gameObject.tag.Equals("Player"))
         {
-            _ignoreList.Add(col);
             CharacterController p = col.gameObject.GetComponent<CharacterController>();
-            p.GiveDash();
-            Physics2D.IgnoreCollision(col, collider, true);
+            if (!_ignoreList.Contains(p.id))
+            {
+                _ignoreList.Add(p.id);
+                p.GiveDash();
+            }
+            p.TargetReached(this, 1);
         }
     }
 
     public void TriggerReset()
     {
-        // Debug.Log("BALLOON RESET");
-        foreach (Collider2D col in _ignoreList)
-        {
-            Physics2D.IgnoreCollision(col, collider, false);
-        }
+        SpriteRenderer s = GetComponent<SpriteRenderer>();
+        s.color = new Color(Random.value , Random.value , Random.value);
 
-        _ignoreList = new List<Collider2D>();
+        _ignoreList = new List<float>();
     }
 }

@@ -210,6 +210,7 @@ public class PopulationManager : MonoBehaviour
             {
                 Balloon b = bal.GetComponent<Balloon>();
                 b.TriggerReset();
+
             }
         }
 

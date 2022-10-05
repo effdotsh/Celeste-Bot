@@ -129,6 +129,7 @@ public class CharacterController : MonoBehaviour
 
     private void UpdatePhysics()
     {
+        
         //physics
         _moveDisableTimer--;
         if (WallSliding() && _moveDisableTimer < wallJumpTime - 5)

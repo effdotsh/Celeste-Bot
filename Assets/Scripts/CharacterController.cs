@@ -70,9 +70,7 @@ public class CharacterController : MonoBehaviour
     public float wallJumpX;
     public float wallJumpY;
     public int wallJumpTime;
-
-    public float springForce;
-
+    
     public PopulationManager manager;
 
 
@@ -399,11 +397,11 @@ public class CharacterController : MonoBehaviour
     }
 
 
-    public void Spring()
+    public void Spring(float force)
     {
         Vector2 curVel = rb.velocity;
         rb.velocity = new Vector2(curVel.x, 0);
-        rb.AddForce(Vector2.up * springForce, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.up * force, ForceMode2D.Impulse);
         GiveDash();
         _dashCounter = 0;
         lastSpring = Time.realtimeSinceStartup;

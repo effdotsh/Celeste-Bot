@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Spring : MonoBehaviour
 {
+    public float force = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,7 @@ public class Spring : MonoBehaviour
         if (collision.gameObject.tag.Equals("Player"))
         {
             CharacterController p = collision.gameObject.GetComponent<CharacterController>();
-            p.Spring();
+            p.Spring(force);
         }
     }
 }

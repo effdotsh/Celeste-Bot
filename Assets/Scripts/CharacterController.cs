@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 
 public class CharacterController : MonoBehaviour
 {
+    public float id;
     public bool trailEnabled;
     public TrailRenderer normalTrail;
     public TrailRenderer dashTrail;
@@ -92,6 +93,7 @@ public class CharacterController : MonoBehaviour
     public bool dead = false;
 
     public bool won = false;
+
 
     void Awake()
     {

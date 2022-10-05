@@ -35,8 +35,7 @@ public class PopulationManager : MonoBehaviour
     private float _maxTime;
     private float _roundStart;
 
-    private int _deadCounter = 0;
-
+    private List<float> _deadList = new List<float>();
 
     private bool _won = false;
 
@@ -77,6 +76,7 @@ public class PopulationManager : MonoBehaviour
             SpriteRenderer s = p.GetComponent<SpriteRenderer>();
             s.sortingOrder = 1;
             s.color = agentColor;
+            c.id = Random.value;
             if (hideAgents)
             {
                 s.enabled = false;
@@ -100,17 +100,23 @@ public class PopulationManager : MonoBehaviour
     }
 
     public void Report(CharacterController c)
-    { 
+    {
         if (_won && c != _bestReplayer) return; // stupid patch for reset bug that I can't figure out the cause of
-        else if (_won)
-        {        
-            _deadCounter++;
 
+        else if (_won)
+        {
+            if (!_deadList.Contains(c.id)) _deadList.Add(c.id);
+            else return;
             // Debug.Log("Triggering win reset");
             ResetGame();
         }
         
-        _deadCounter++;
+        
+        // _deadList.Add(c.id);
+        if (!_deadList.Contains(c.id)) _deadList.Add(c.id);
+        else return;
+
+        
         if (c == _bestReplayer)
         {
             return;
@@ -151,7 +157,7 @@ public class PopulationManager : MonoBehaviour
 
         // if (_won || _deadCounter >= populationSize)
 
-        if (_deadCounter == populationSize)
+        if (_deadList.Count == populationSize)
         {
             if(!_resetLock) Debug.Log("hevy iz ded");
             
@@ -165,7 +171,7 @@ public class PopulationManager : MonoBehaviour
         
 
         _resetLock = true;
-        _deadCounter = 0;
+        _deadList = new List<float>();
 
         
         

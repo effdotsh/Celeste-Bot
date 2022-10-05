@@ -18,15 +18,14 @@ public class CloudSpawner : MonoBehaviour
     public void Spawn()
     {
         _lastSpawn = Time.realtimeSinceStartup;
-        GameObject c = Instantiate(cloud, _spawnPos, _spawnRot);
+        GameObject c = Instantiate(cloud, transform.position, transform.rotation);
         Cloud cscript = c.GetComponent<Cloud>();
         cscript.speed = speed;
     }
 
     void Start()
     {
-        _spawnPos = transform.position;
-        _spawnRot = transform.rotation;
+
     }
 
     // Update is called once per frame

@@ -63,7 +63,7 @@ public class PopulationManager : MonoBehaviour
         bs.sortingOrder = 5;
         _bestReplayer.normalTrail.sortingOrder = 4;
         _bestReplayer.dashTrail.sortingOrder = 3;
-
+        _bestReplayer.maxDashes = maxDashes;
         for (int i = 0; i < populationSize; i++)
         {
             GameObject p = Instantiate(player, t.position, t.rotation);

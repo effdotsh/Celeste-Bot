@@ -35,8 +35,8 @@ public class Balloon : Target {
 
     public void TriggerReset()
     {
-        SpriteRenderer s = GetComponent<SpriteRenderer>();
-        s.color = new Color(Random.value , Random.value , Random.value);
+        // SpriteRenderer s = GetComponent<SpriteRenderer>();
+        // s.color = new Color(Random.value , Random.value , Random.value);
 
         _ignoreList = new List<float>();
     }

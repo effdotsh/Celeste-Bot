@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 839972351612082068, guid: d98e8d13ff54cdb44b7c629df9586602, type: 3}
       propertyPath: m_Name
-      value: Spring Variant
+      value: Spring
       objectReference: {fileID: 0}
     - target: {fileID: 839972351612082068, guid: d98e8d13ff54cdb44b7c629df9586602, type: 3}
       propertyPath: m_TagString
@@ -73,7 +73,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 839972351612082071, guid: d98e8d13ff54cdb44b7c629df9586602, type: 3}
       propertyPath: m_Color.a
-      value: 0.85882354
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 839972351612082071, guid: d98e8d13ff54cdb44b7c629df9586602, type: 3}
       propertyPath: m_Color.b
@@ -106,3 +106,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af6ccb9d846ca3c4c8f66345e0d81d6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  force: 10

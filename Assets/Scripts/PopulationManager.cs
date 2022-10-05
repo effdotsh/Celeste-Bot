@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class PopulationManager : MonoBehaviour
 {
+    public int maxDashes = 1;
     public Color agentColor;
     private const int NumChoices = 12;
     public int MinActionTime;
@@ -82,6 +83,7 @@ public class PopulationManager : MonoBehaviour
                 s.enabled = false;
             }
 
+            c.maxDashes = maxDashes;
             c.Kill();
         }
     }

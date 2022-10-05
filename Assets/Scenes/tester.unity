@@ -1310,6 +1310,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3333857809502852895, guid: ab974fd94ea031c44a7b1bac09c047c1, type: 3}
+      propertyPath: maxDashes
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5030523306348637079, guid: ab974fd94ea031c44a7b1bac09c047c1, type: 3}
       propertyPath: m_RootOrder
       value: 5

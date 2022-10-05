@@ -13,9 +13,12 @@ public class CharacterController : MonoBehaviour
 {
     public float id;
     public bool trailEnabled;
+    
+    public TrailRenderer hyperTrail;
     public TrailRenderer normalTrail;
     public TrailRenderer dashTrail;
 
+    public Sprite hyperSprite;
     public Sprite normalSprite;
     public Sprite dashSprite;
 
@@ -50,7 +53,8 @@ public class CharacterController : MonoBehaviour
 
     private float _facing = 1;
 
-    private bool _hasDash = false;
+    private int _numDashes = 0;
+    public int maxDashes = 1;
 
     private int _dashCounter = 0;
     private float _dashSpeedX = 0;
@@ -95,6 +99,12 @@ public class CharacterController : MonoBehaviour
     public bool won = false;
 
 
+    void Start()
+    {
+        dashTrail.enabled = trailEnabled;
+        hyperTrail.enabled = trailEnabled;
+        normalTrail.enabled = trailEnabled;
+    }
     void Awake()
     {
         GiveDash();
@@ -152,14 +162,7 @@ public class CharacterController : MonoBehaviour
 
             if (Standing())
             {
-                sprite.sprite = normalSprite;
-                if (trailEnabled)
-                {
-                    normalTrail.sortingOrder = 4;
-                    dashTrail.sortingOrder = 3;
-                }
-
-                _hasDash = true;
+                _numDashes = maxDashes;
             }
 
 
@@ -276,6 +279,32 @@ public class CharacterController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (_numDashes == 0)
+        {
+            hyperTrail.sortingOrder = 0;
+            normalTrail.sortingOrder = 0;
+            dashTrail.sortingOrder = 4;
+            
+            sprite.sprite = dashSprite;
+
+        } else if (_numDashes == 1)
+        {
+            hyperTrail.sortingOrder = 0;
+            normalTrail.sortingOrder = 4;
+            dashTrail.sortingOrder = 0;
+            
+            sprite.sprite = normalSprite;
+
+        } else if (_numDashes >= 2)
+        {
+            hyperTrail.sortingOrder = 4;
+            normalTrail.sortingOrder = 0;
+            dashTrail.sortingOrder = 0;
+            sprite.sprite = hyperSprite;
+        }
+        
+        
+        
         SpriteRenderer s = GetComponent<SpriteRenderer>();
         s.flipX = _targetVelX < 0;
         if (dead)
@@ -306,13 +335,7 @@ public class CharacterController : MonoBehaviour
 
     public void GiveDash()
     {
-        _hasDash = true;
-        sprite.sprite = normalSprite;
-        if (trailEnabled)
-        {
-            normalTrail.sortingOrder = 4;
-            dashTrail.sortingOrder = 3;
-        }
+        _numDashes = maxDashes;
     }
 
     private bool Standing()
@@ -388,21 +411,14 @@ public class CharacterController : MonoBehaviour
 
     public void Dash()
     {
-        if (!_hasDash) return;
+        if (_numDashes == 0) return;
 
         _targetVelX = _targetVelXChoice;
         _targetVelY = _targetVelYChoice;
 
         _moveDisableTimer = -1;
 
-        sprite.sprite = dashSprite;
-        if (trailEnabled)
-        {
-            normalTrail.sortingOrder = 3;
-            dashTrail.sortingOrder = 4;
-        }
-
-        _hasDash = false;
+        _numDashes--;
         _dashCounter = dashLength;
 
 
@@ -413,17 +429,15 @@ public class CharacterController : MonoBehaviour
 
     public bool HasDash()
     {
-        return _hasDash;
+        return _numDashes != 0;
     }
 
     public void Respawn()
     {
-        sprite.sprite = normalSprite;
-
         dead = false;
         rb.simulated = true;
         transform.position = new Vector3(_spawnX, _spawnY, 0);
-        _hasDash = true;
+        _numDashes = maxDashes;
         _targetVelX = 0;
         _targetVelY = 0;
         _velX = 0;
@@ -446,30 +460,12 @@ public class CharacterController : MonoBehaviour
         _breakBlockColliders = new List<Collider2D>();
         _breakBlockStartTimes = new List<float>();
 
-        if (trailEnabled)
-        {
-            // normalTrail.enabled = true;
-            // dashTrail.enabled = true;
-
-            normalTrail.sortingOrder = 4;
-            dashTrail.sortingOrder = 3;
-        }
-
         prevCheckpointActionNumber = 0;
         curCheckpointActionNumber = 0;
     }
 
     public void Kill()
     {
-        if (trailEnabled)
-        {
-            // Debug.Log("-----");
-            // Debug.Log(_actions.Count);
-            // Debug.Log(_actionCounter);
-            // Debug.Log(prevCheckpointActionNumber);
-            // Debug.Log("------");
-        }
-
         dead = true;
         rb.gravityScale = 0;
         rb.simulated = false;
@@ -487,9 +483,6 @@ public class CharacterController : MonoBehaviour
                 }
             }
         }
-
-        // dashTrail.enabled = false;
-        // normalTrail.enabled = false;
     }
 
     public int GetActionMutationStart()
@@ -510,7 +503,7 @@ public class CharacterController : MonoBehaviour
         if (t.value > _fitness)
         {
             _fitness = t.value;
-            if (_hasDash) _fitness += 0.1f;
+            if (_numDashes != 0) _fitness += 0.1f;
             _fitness -= 0.000001f * _actionCounter;
 
             prevCheckpointActionNumber = curCheckpointActionNumber - retrograde;

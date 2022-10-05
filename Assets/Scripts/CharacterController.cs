@@ -411,7 +411,7 @@ public class CharacterController : MonoBehaviour
 
     public void Dash()
     {
-        if (numDashes == 0) return;
+        if (numDashes == 0 || _dashCounter > 0) return;
 
         _targetVelX = _targetVelXChoice;
         _targetVelY = _targetVelYChoice;

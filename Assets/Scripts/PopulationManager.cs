@@ -9,6 +9,7 @@ using Random = UnityEngine.Random;
 public class PopulationManager : MonoBehaviour
 {
     public int maxDashes = 1;
+    public int dashLength = 12;
     public Color agentColor;
     private const int NumChoices = 12;
     public int MinActionTime;
@@ -64,6 +65,7 @@ public class PopulationManager : MonoBehaviour
         _bestReplayer.normalTrail.sortingOrder = 4;
         _bestReplayer.dashTrail.sortingOrder = 3;
         _bestReplayer.maxDashes = maxDashes;
+        _bestReplayer.dashLength = dashLength;
         for (int i = 0; i < populationSize; i++)
         {
             GameObject p = Instantiate(player, t.position, t.rotation);
@@ -84,6 +86,7 @@ public class PopulationManager : MonoBehaviour
             }
 
             c.maxDashes = maxDashes;
+            c.dashLength = dashLength;
             c.Kill();
         }
     }

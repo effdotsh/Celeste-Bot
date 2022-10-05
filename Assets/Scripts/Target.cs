@@ -11,8 +11,10 @@ public class Target : MonoBehaviour
     public bool isWin;
 
     public bool withDashOnly;
-
+    public bool bothDashedNeeded;
+    
     public bool acceptAny;
+    
     void Start()
     {
         _id = Random.value;
@@ -34,8 +36,7 @@ public class Target : MonoBehaviour
         {
             CharacterController c = col.gameObject.GetComponent<CharacterController>();
 
-            if (!withDashOnly || c.HasDash())
-            {
+            if (acceptAny || (!withDashOnly && !bothDashedNeeded) || (withDashOnly && c.numDashes >= 1) || (bothDashedNeeded && c.numDashes >= 2)){
                 c.TargetReached(this);
             }
         }

@@ -53,7 +53,7 @@ public class CharacterController : MonoBehaviour
 
     private float _facing = 1;
 
-    private int _numDashes = 0;
+    public int numDashes = 0;
     public int maxDashes = 1;
 
     private int _dashCounter = 0;
@@ -162,7 +162,7 @@ public class CharacterController : MonoBehaviour
 
             if (Standing())
             {
-                _numDashes = maxDashes;
+                numDashes = maxDashes;
             }
 
 
@@ -279,7 +279,7 @@ public class CharacterController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_numDashes == 0)
+        if (numDashes == 0)
         {
             hyperTrail.sortingOrder = 0;
             normalTrail.sortingOrder = 0;
@@ -287,7 +287,7 @@ public class CharacterController : MonoBehaviour
             
             sprite.sprite = dashSprite;
 
-        } else if (_numDashes == 1)
+        } else if (numDashes == 1)
         {
             hyperTrail.sortingOrder = 0;
             normalTrail.sortingOrder = 4;
@@ -295,7 +295,7 @@ public class CharacterController : MonoBehaviour
             
             sprite.sprite = normalSprite;
 
-        } else if (_numDashes >= 2)
+        } else if (numDashes >= 2)
         {
             hyperTrail.sortingOrder = 4;
             normalTrail.sortingOrder = 0;
@@ -335,7 +335,7 @@ public class CharacterController : MonoBehaviour
 
     public void GiveDash()
     {
-        _numDashes = maxDashes;
+        numDashes = maxDashes;
     }
 
     private bool Standing()
@@ -411,14 +411,14 @@ public class CharacterController : MonoBehaviour
 
     public void Dash()
     {
-        if (_numDashes == 0) return;
+        if (numDashes == 0) return;
 
         _targetVelX = _targetVelXChoice;
         _targetVelY = _targetVelYChoice;
 
         _moveDisableTimer = -1;
 
-        _numDashes--;
+        numDashes--;
         _dashCounter = dashLength;
 
 
@@ -429,7 +429,7 @@ public class CharacterController : MonoBehaviour
 
     public bool HasDash()
     {
-        return _numDashes != 0;
+        return numDashes != 0;
     }
 
     public void Respawn()
@@ -437,7 +437,7 @@ public class CharacterController : MonoBehaviour
         dead = false;
         rb.simulated = true;
         transform.position = new Vector3(_spawnX, _spawnY, 0);
-        _numDashes = maxDashes;
+        numDashes = maxDashes;
         _targetVelX = 0;
         _targetVelY = 0;
         _velX = 0;
@@ -503,7 +503,7 @@ public class CharacterController : MonoBehaviour
         if (t.value > _fitness)
         {
             _fitness = t.value;
-            if (_numDashes != 0) _fitness += 0.1f;
+            if (numDashes != 0) _fitness += 0.1f;
             _fitness -= 0.000001f * _actionCounter;
 
             prevCheckpointActionNumber = curCheckpointActionNumber - retrograde;

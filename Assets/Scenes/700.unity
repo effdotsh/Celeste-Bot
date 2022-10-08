@@ -2025,6 +2025,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Border
       objectReference: {fileID: 0}
+    - target: {fileID: 101165093049780288, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 101165093049780289, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2068,6 +2072,14 @@ PrefabInstance:
     - target: {fileID: 101165093049780289, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 101165093092010288, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 101165094100620901, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7841f142c13f84009bc13531e09191f6, type: 3}

@@ -943,6 +943,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 886426466, guid: c45ad6d1052762f4d9fb4150e179b0aa, type: 3}
+      propertyPath: force
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 7549034288114353986, guid: c45ad6d1052762f4d9fb4150e179b0aa, type: 3}
       propertyPath: m_Name
       value: Spring
@@ -1652,7 +1656,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7318803960955880544, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: value
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7318803960955880544, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: acceptAny
@@ -1668,7 +1672,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7318803960955880550, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.06657195
+      value: -0.44
       objectReference: {fileID: 0}
     - target: {fileID: 7318803960955880550, guid: 150382647bb5da94dba28afa0cca29df, type: 3}
       propertyPath: m_LocalPosition.y

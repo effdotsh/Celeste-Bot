@@ -788,6 +788,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Border
       objectReference: {fileID: 0}
+    - target: {fileID: 101165093049780288, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 101165093049780289, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -831,6 +835,14 @@ PrefabInstance:
     - target: {fileID: 101165093049780289, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 101165093092010288, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 101165094100620901, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7841f142c13f84009bc13531e09191f6, type: 3}
@@ -2219,6 +2231,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
+      propertyPath: dashLength
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 412996884081206889, guid: 7ce2117f82e5e954c90c15987e446085, type: 3}
       propertyPath: startMaxTime
       value: 5
